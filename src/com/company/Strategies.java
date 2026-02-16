@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Strategies {
 
     @FunctionalInterface
-    interface Strategy{
+    public interface Strategy{
         int choose(int index, ArrayList<Integer> shells);
     }
     // taking a shell value (0 = blank, 1 = live) and an index (0 = first shell, 1 = second, ... 7 = last), returns

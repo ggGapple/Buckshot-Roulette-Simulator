@@ -25,7 +25,7 @@ public class Simulation {
         Collections.shuffle(shells);
     }
 
-    public static ArrayList<Integer> alwaysShootVDealer(){
+    public static ArrayList<Integer> simulate(Strategies.Strategy player, Strategies.Strategy dealer){
         shuffle();
         values.clear();
         playerDamage = 0;
@@ -34,120 +34,7 @@ public class Simulation {
 
         for (int g=0;g<8;g++){
             if (playerTurn) {
-                playerDamage += Strategies.alwaysShoot(g,shells);
-                playerTurn=false;
-            }
-            else{
-                dealerChoice = Strategies.dealerAI(g,shells);
-                if (dealerChoice == 2) {
-                    continue;
-                } else if (dealerChoice == -1) {
-                    playerDamage += 1;
-                }
-                else if (dealerChoice == 1){
-                    dealerDamage += 1;
-                }
-                playerTurn=true;
-            }
-        }
-        values.add(playerDamage);
-        values.add(dealerDamage);
-        return values;
-    }
-
-    public static ArrayList<Integer> alwaysShootMirror(){
-        shuffle();
-        values.clear();
-        playerDamage = 0;
-        dealerDamage = 0;
-        playerTurn = true;
-
-        for (int g=0;g<8;g++){
-            if (playerTurn) {
-                playerDamage += Strategies.alwaysShoot(g,shells);
-                playerTurn=false;
-            }else{
-                dealerDamage +=Strategies.alwaysShoot(g,shells);
-                playerTurn=true;
-            }
-        }
-        values.add(playerDamage);
-        values.add(dealerDamage);
-        return values;
-    }
-
-    public static ArrayList<Integer> alwaysShootVProbability(){
-        shuffle();
-        values.clear();
-        playerDamage = 0;
-        dealerDamage = 0;
-        playerTurn = true;
-
-        for (int g=0;g<8;g++){
-            if (playerTurn) {
-                playerDamage += Strategies.alwaysShoot(g,shells);
-                playerTurn=false;
-            }else{
-                dealerChoice = Strategies.probability(g,shells);
-                if (dealerChoice == 2) {
-                    continue;
-                } else if (dealerChoice == -1) {
-                    playerDamage += 1;
-                } else if (dealerChoice==1) {
-                    dealerDamage += 1;
-                }
-                playerTurn=true;
-            }
-        }
-        values.add(playerDamage);
-        values.add(dealerDamage);
-        return values;
-    }
-
-    public static ArrayList<Integer> probabilityVDealer(){
-        shuffle();
-        values.clear();
-        playerDamage = 0;
-        dealerDamage = 0;
-        playerTurn = true;
-
-        for (int g=0;g<8;g++){
-            if (playerTurn) {
-                playerChoice = Strategies.probability(g,shells);
-                if (playerChoice == 2) {
-                    continue;
-                } else if (playerChoice == -1) {
-                    dealerDamage+= 1;
-                } else if (playerChoice==1) {
-                    playerDamage += 1;
-                }
-                playerTurn=false;
-            }else{
-                dealerChoice = Strategies.dealerAI(g,shells);
-                if (dealerChoice == 2) {
-                    continue;
-                } else if (dealerChoice == -1) {
-                    playerDamage += 1;
-                } else if (dealerChoice == 1) {
-                    dealerDamage += 1;
-                }
-                playerTurn=true;
-            }
-        }
-        values.add(playerDamage);
-        values.add(dealerDamage);
-        return values;
-    }
-    public static ArrayList<Integer> mirrorProbability(){
-        shuffle();
-        values.clear();
-        playerDamage = 0;
-        dealerDamage = 0;
-        playerTurn = true;
-
-        for (int g=0;g<8;g++){
-            if (playerTurn) {
-                playerChoice = Strategies.probability(g,shells);
+                playerChoice = player.choose(g,shells);
                 if (playerChoice == 2) {
                     continue;
                 } else if (playerChoice == -1) {
@@ -158,7 +45,7 @@ public class Simulation {
                 }
                 playerTurn=false;
             }else{
-                dealerChoice = Strategies.probability(g,shells);
+                dealerChoice = dealer.choose(g,shells);
                 if (dealerChoice == 2) {
                     continue;
                 } else if (dealerChoice == -1) {
