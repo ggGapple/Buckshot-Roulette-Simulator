@@ -7,8 +7,6 @@ public class Simulation {
     private static int playerDamage = 0;
     private static int dealerDamage = 0;
     private static boolean playerTurn = true;
-    private static boolean repeat = false;
-    private static boolean repeat2=false;
     private static ArrayList<Integer> values = new ArrayList<Integer>();
     public static ArrayList<Integer> shells = new ArrayList<Integer>();
     private static int dealerChoice = 0;
@@ -32,22 +30,21 @@ public class Simulation {
         values.clear();
         playerDamage = 0;
         dealerDamage = 0;
+        playerTurn = true;
+
         for (int g=0;g<8;g++){
-            if (!repeat&&playerTurn||g==0) {
-                playerDamage += Strategies.alwaysShoot(shells.get(g));
+            if (playerTurn) {
+                playerDamage += Strategies.alwaysShoot(g,shells);
                 playerTurn=false;
             }
             else{
-                dealerChoice = Strategies.dealerAI(shells.get(g),g);
-                repeat = false;
+                dealerChoice = Strategies.dealerAI(g,shells);
                 if (dealerChoice == 2) {
-                    repeat = true;
+                    continue;
                 } else if (dealerChoice == -1) {
                     playerDamage += 1;
-                } else if (dealerChoice ==0){
-                    repeat=false;
                 }
-                else {
+                else if (dealerChoice == 1){
                     dealerDamage += 1;
                 }
                 playerTurn=true;
@@ -63,12 +60,14 @@ public class Simulation {
         values.clear();
         playerDamage = 0;
         dealerDamage = 0;
+        playerTurn = true;
+
         for (int g=0;g<8;g++){
-            if (playerTurn||g==0) {
-                playerDamage += Strategies.alwaysShoot(shells.get(g));
+            if (playerTurn) {
+                playerDamage += Strategies.alwaysShoot(g,shells);
                 playerTurn=false;
             }else{
-                dealerDamage +=Strategies.alwaysShoot(shells.get(g));
+                dealerDamage +=Strategies.alwaysShoot(g,shells);
                 playerTurn=true;
             }
         }
@@ -82,22 +81,19 @@ public class Simulation {
         values.clear();
         playerDamage = 0;
         dealerDamage = 0;
+        playerTurn = true;
+
         for (int g=0;g<8;g++){
-            if (!repeat&&playerTurn||g==0) {
-                playerDamage += Strategies.alwaysShoot(shells.get(g));
-                repeat = false;
+            if (playerTurn) {
+                playerDamage += Strategies.alwaysShoot(g,shells);
                 playerTurn=false;
             }else{
-                dealerChoice = Strategies.probability(shells.get(g),g,shells);
-                repeat=false;
+                dealerChoice = Strategies.probability(g,shells);
                 if (dealerChoice == 2) {
-                    repeat = true;
+                    continue;
                 } else if (dealerChoice == -1) {
                     playerDamage += 1;
-                } else if (dealerChoice==0){
-                    repeat=false;
-                }
-                else {
+                } else if (dealerChoice==1) {
                     dealerDamage += 1;
                 }
                 playerTurn=true;
@@ -113,33 +109,26 @@ public class Simulation {
         values.clear();
         playerDamage = 0;
         dealerDamage = 0;
+        playerTurn = true;
+
         for (int g=0;g<8;g++){
-            if (!repeat&&playerTurn||g==0||repeat2) {
-                playerChoice = Strategies.probability(shells.get(g),g,shells);
-                repeat2=false;
+            if (playerTurn) {
+                playerChoice = Strategies.probability(g,shells);
                 if (playerChoice == 2) {
-                    repeat2 = true;
+                    continue;
                 } else if (playerChoice == -1) {
                     dealerDamage+= 1;
-                } else if (dealerChoice==0){
-                    repeat2=false;
-                }
-                else {
+                } else if (playerChoice==1) {
                     playerDamage += 1;
                 }
-                repeat = false;
                 playerTurn=false;
             }else{
-                dealerChoice = Strategies.dealerAI(shells.get(g),g);
-                repeat = false;
+                dealerChoice = Strategies.dealerAI(g,shells);
                 if (dealerChoice == 2) {
-                    repeat = true;
+                    continue;
                 } else if (dealerChoice == -1) {
                     playerDamage += 1;
-                } else if (dealerChoice ==0){
-                    repeat=false;
-                }
-                else {
+                } else if (dealerChoice == 1) {
                     dealerDamage += 1;
                 }
                 playerTurn=true;
@@ -154,33 +143,28 @@ public class Simulation {
         values.clear();
         playerDamage = 0;
         dealerDamage = 0;
+        playerTurn = true;
+
         for (int g=0;g<8;g++){
-            if (!repeat&&playerTurn||g==0||repeat2) {
-                playerChoice = Strategies.probability(shells.get(g),g,shells);
-                repeat2=false;
+            if (playerTurn) {
+                playerChoice = Strategies.probability(g,shells);
                 if (playerChoice == 2) {
-                    repeat2 = true;
+                    continue;
                 } else if (playerChoice == -1) {
                     dealerDamage+= 1;
-                } else if (dealerChoice==0){
-                    repeat2=false;
                 }
-                else {
+                else if (playerChoice==1){
                     playerDamage += 1;
                 }
-                repeat = false;
                 playerTurn=false;
             }else{
-                dealerChoice = Strategies.probability(shells.get(g),g,shells);
-                repeat=false;
+                dealerChoice = Strategies.probability(g,shells);
                 if (dealerChoice == 2) {
-                    repeat = true;
+                    continue;
                 } else if (dealerChoice == -1) {
                     playerDamage += 1;
-                } else if (dealerChoice==0){
-                    repeat=false;
                 }
-                else {
+                else if (dealerChoice==1) {
                     dealerDamage += 1;
                 }
                 playerTurn=true;
