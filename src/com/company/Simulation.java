@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Simulation {
-    private static int playerDamage = 0;
-    private static int dealerDamage = 0;
-    private static boolean playerTurn = true;
-    private static ArrayList<Integer> values = new ArrayList<Integer>();
     public static ArrayList<Integer> shells = new ArrayList<Integer>();
-    private static int dealerChoice = 0;
-    private static int playerChoice =0;
 
     // initializes arrayList shells with 4 live rounds and 4 blank rounds, then shuffles
     private static void shuffle(){
@@ -25,40 +19,52 @@ public class Simulation {
         Collections.shuffle(shells);
     }
 
-    public static ArrayList<Integer> simulate(Strategies.Strategy player, Strategies.Strategy dealer){
+    // takes two Strategy methods as input, simulates a game according to those strategies, and returns the amount of
+    // damage the player dealt to the dealer throughout that game. Knowing that there are always four live rounds, we
+    // can therefore extrapolate the amount of damage the dealer dealt to the player with 4 - the return value.
+    // By only keeping track of playerDamage, we skip a lot of case checks (i.e. dealer shoots player or player
+    // shoots self) and simply move on to the next shell via the loop, which implicitly increments dealerDamage in
+    // the form of 4 - return value
+    public static int simulate(Strategies.Strategy player, Strategies.Strategy dealer){
         shuffle();
-        values.clear();
-        playerDamage = 0;
-        dealerDamage = 0;
-        playerTurn = true;
+        int playerDamage = 0;
+        int playerChoice;
+        int dealerChoice;
+        boolean playerTurn = true;
 
         for (int g=0;g<8;g++){
+            //player turn
             if (playerTurn) {
+                //make choice based on given method
                 playerChoice = player.choose(g,shells);
+                //if player shot self and it was blank
                 if (playerChoice == 2) {
+                    //repeat turn
                     continue;
-                } else if (playerChoice == -1) {
-                    dealerDamage+= 1;
                 }
+                //if player shot dealer and it was live
                 else if (playerChoice==1){
                     playerDamage += 1;
                 }
+                //player does not get repeat turn
                 playerTurn=false;
-            }else{
+            }
+            //dealer turn
+            else{
+                //make choice based on given method
                 dealerChoice = dealer.choose(g,shells);
+                //if dealer shot self and it was blank
                 if (dealerChoice == 2) {
                     continue;
-                } else if (dealerChoice == -1) {
+                }
+                //if dealer shot self and it was live
+                else if (dealerChoice == -1) {
                     playerDamage += 1;
                 }
-                else if (dealerChoice==1) {
-                    dealerDamage += 1;
-                }
+                //dealer does not repeat turn
                 playerTurn=true;
             }
         }
-        values.add(playerDamage);
-        values.add(dealerDamage);
-        return values;
+        return playerDamage;
     }
 }

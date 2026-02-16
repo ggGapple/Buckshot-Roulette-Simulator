@@ -8,6 +8,7 @@ public class Strategies {
     public interface Strategy{
         int choose(int index, ArrayList<Integer> shells);
     }
+
     // taking a shell value (0 = blank, 1 = live) and an index (0 = first shell, 1 = second, ... 7 = last), returns
     // a value according to the dealer's natural AI. That is, 50% chance to shoot the player, 50% chance to shoot self.
     // 1 if the opposing player is shot and takes damage, 0 if the player doesn't, -1 if the dealer takes damage,
@@ -37,15 +38,22 @@ public class Strategies {
     public static int probability(int index, ArrayList<Integer> shells){
         int shell = shells.get(index);
         int liveCount = 0;
-        // count the amount of live and blank rounds already used
+        // count the amount of live rounds already used
         for (int t=0;t<index;t++){
             liveCount +=shells.get(t);
         }
+        // extrapolate the amount of blank rounds already used
         int blankCount = index- liveCount;
-        if (blankCount< liveCount) {
+        //if more lives have been used far than blanks, that means there are more blank rounds than lives left.
+        // Therefore, shoot self
+        if (blankCount < liveCount) {
             if (shell==0){
                 return 2;
             } return -1;
-        }return shell;
+        }
+        //otherwise return shell (shoot dealer)
+        return shell;
     }
+
+
 }

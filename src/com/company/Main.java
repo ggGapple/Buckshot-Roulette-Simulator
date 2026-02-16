@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static com.company.Simulation.simulate;
 
@@ -11,9 +10,9 @@ public class Main {
         int dealerTotal = 0;
 
         for (int i = 0; i < trials; i++) {
-            ArrayList<Integer> result = simulate(p1, p2);
-            playerTotal += result.get(0);
-            dealerTotal += result.get(1);
+            int result = simulate(p1, p2);
+            playerTotal += result;
+            dealerTotal += (4-result);
         }
 
         System.out.println("=== " + name + " ===");
@@ -24,31 +23,16 @@ public class Main {
 
 
     public static void main(String[] args) {
-        int trials = 10000000; // big sample for smooth averages
+        int trials = 1000000; // big sample for smooth averages
 
-        run("Always vs Always",
-                Strategies::alwaysShoot,
-                Strategies::alwaysShoot,
-                trials);
+        run("Always vs Always", Strategies::alwaysShoot, Strategies::alwaysShoot, trials);
 
-        run("Always vs Dealer (Random 50/50)",
-                Strategies::alwaysShoot,
-                Strategies::dealerAI,
-                trials);
+        run("Always vs Dealer (Random 50/50)", Strategies::alwaysShoot, Strategies::dealerAI, trials);
 
-        run("Always vs Probability",
-                Strategies::alwaysShoot,
-                Strategies::probability,
-                trials);
+        run("Always vs Probability", Strategies::alwaysShoot, Strategies::probability, trials);
 
-        run("Probability vs Dealer",
-                Strategies::probability,
-                Strategies::dealerAI,
-                trials);
+        run("Probability vs Dealer", Strategies::probability, Strategies::dealerAI, trials);
 
-        run("Probability vs Probability",
-                Strategies::probability,
-                Strategies::probability,
-                trials);
+        run("Probability vs Probability", Strategies::probability, Strategies::probability, trials);
     }
 }
