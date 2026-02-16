@@ -11,6 +11,7 @@ public class Main {
 
         for (int i = 0; i < trials; i++) {
             int result = simulate(p1, p2);
+
             playerTotal += result;
             dealerTotal += (4-result);
         }
@@ -33,6 +34,18 @@ public class Main {
 
         run("Probability vs Dealer", Strategies::probability, Strategies::dealerAI, trials);
 
-        run("Probability vs Probability", Strategies::probability, Strategies::probability, trials);
+        run("Aggressive vs Probability", Strategies::aggressive, Strategies::probability, trials);
+
+        run("Aggressive vs Conservative", Strategies::aggressive,
+                Strategies::conservative, trials);
+
+        run("Probability vs Inverse Probability", Strategies::probability,
+                Strategies::inverseProbability, trials);
+
+        run("Probability vs Alternating", Strategies::probability,
+                Strategies::alternating, trials);
+
+        run("Always vs Cheater", Strategies::alwaysShoot,
+                Strategies::cheater, trials);
     }
 }
