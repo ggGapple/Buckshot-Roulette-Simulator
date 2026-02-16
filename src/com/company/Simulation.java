@@ -13,7 +13,9 @@ public class Simulation {
     public static ArrayList<Integer> shells = new ArrayList<Integer>();
     private static int dealerChoice = 0;
     private static int playerChoice =0;
-    public static ArrayList<Integer> shuffle(){
+
+    // initializes arrayList shells with 4 live rounds and 4 blank rounds, then shuffles
+    private static void shuffle(){
         shells.clear();
         for (int k=0;k<8;k++){
             if (k<4){
@@ -23,8 +25,8 @@ public class Simulation {
             }
         }
         Collections.shuffle(shells);
-        return shells;
     }
+
     public static ArrayList<Integer> alwaysShootVDealer(){
         shuffle();
         values.clear();
@@ -32,11 +34,11 @@ public class Simulation {
         dealerDamage = 0;
         for (int g=0;g<8;g++){
             if (!repeat&&playerTurn||g==0) {
-                playerDamage += Player.alwaysShoot(shells.get(g));
+                playerDamage += Strategies.alwaysShoot(shells.get(g));
                 playerTurn=false;
             }
             else{
-                dealerChoice = Dealer.dealerAI(shells.get(g),g);
+                dealerChoice = Strategies.dealerAI(shells.get(g),g);
                 repeat = false;
                 if (dealerChoice == 2) {
                     repeat = true;
@@ -63,10 +65,10 @@ public class Simulation {
         dealerDamage = 0;
         for (int g=0;g<8;g++){
             if (playerTurn||g==0) {
-                playerDamage += Player.alwaysShoot(shells.get(g));
+                playerDamage += Strategies.alwaysShoot(shells.get(g));
                 playerTurn=false;
             }else{
-                dealerDamage +=Dealer.alwaysShoot(shells.get(g));
+                dealerDamage +=Strategies.alwaysShoot(shells.get(g));
                 playerTurn=true;
             }
         }
@@ -82,11 +84,11 @@ public class Simulation {
         dealerDamage = 0;
         for (int g=0;g<8;g++){
             if (!repeat&&playerTurn||g==0) {
-                playerDamage += Player.alwaysShoot(shells.get(g));
+                playerDamage += Strategies.alwaysShoot(shells.get(g));
                 repeat = false;
                 playerTurn=false;
             }else{
-                dealerChoice = Dealer.probability(shells.get(g),g,shells);
+                dealerChoice = Strategies.probability(shells.get(g),g,shells);
                 repeat=false;
                 if (dealerChoice == 2) {
                     repeat = true;
@@ -113,7 +115,7 @@ public class Simulation {
         dealerDamage = 0;
         for (int g=0;g<8;g++){
             if (!repeat&&playerTurn||g==0||repeat2) {
-                playerChoice = Player.probability(shells.get(g),g,shells);
+                playerChoice = Strategies.probability(shells.get(g),g,shells);
                 repeat2=false;
                 if (playerChoice == 2) {
                     repeat2 = true;
@@ -128,7 +130,7 @@ public class Simulation {
                 repeat = false;
                 playerTurn=false;
             }else{
-                dealerChoice = Dealer.dealerAI(shells.get(g),g);
+                dealerChoice = Strategies.dealerAI(shells.get(g),g);
                 repeat = false;
                 if (dealerChoice == 2) {
                     repeat = true;
@@ -154,7 +156,7 @@ public class Simulation {
         dealerDamage = 0;
         for (int g=0;g<8;g++){
             if (!repeat&&playerTurn||g==0||repeat2) {
-                playerChoice = Player.probability(shells.get(g),g,shells);
+                playerChoice = Strategies.probability(shells.get(g),g,shells);
                 repeat2=false;
                 if (playerChoice == 2) {
                     repeat2 = true;
@@ -169,7 +171,7 @@ public class Simulation {
                 repeat = false;
                 playerTurn=false;
             }else{
-                dealerChoice = Dealer.probability(shells.get(g),g,shells);
+                dealerChoice = Strategies.probability(shells.get(g),g,shells);
                 repeat=false;
                 if (dealerChoice == 2) {
                     repeat = true;
