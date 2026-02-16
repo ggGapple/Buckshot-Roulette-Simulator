@@ -1,22 +1,30 @@
 package com.company;
 
-import java.util.ArrayList;
 
 import static com.company.Simulation.simulate;
 
 public class Main {
     public static void run(String name, Strategies.Strategy p1, Strategies.Strategy p2, int trials) {
-        int playerTotal = 0;
-        int dealerTotal = 0;
+        double playerTotal = 0;
+        double dealerTotal = 0;
+        double wins = 0;
+
+        double loopsTot=0;
 
         for (int i = 0; i < trials; i++) {
-            int result = simulate(p1, p2);
-
-            playerTotal += result;
-            dealerTotal += (4-result);
+            int[] results = simulate(p1,p2);
+            wins +=results[0];
+            double loops = results[3];
+            double playerDamage = results[1]/loops;
+            double dealerDamage = results[2]/loops;
+            loopsTot += loops;
+            playerTotal += playerDamage;
+            dealerTotal += dealerDamage;
         }
 
         System.out.println("=== " + name + " ===");
+        System.out.println("Finished in "+loopsTot/trials+ " loops on average");
+        System.out.println("Player Winrate: "+String.format("%.2f",wins/trials*100)+"% ("+wins/trials+")");
         System.out.println("Player Average Damage: " + playerTotal / (double) trials);
         System.out.println("Dealer Average Damage: " + dealerTotal / (double) trials);
         System.out.println();
